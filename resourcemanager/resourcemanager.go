@@ -1,8 +1,6 @@
 package resourcemanager
 
 import (
-	"fmt"
-
 	log "github.com/sirupsen/logrus"
 
 	c "github.com/codilime/floodgate/config"
@@ -160,7 +158,8 @@ func (rm ResourceManager) syncApplications() error {
 	for _, application := range rm.resources.Applications {
 		synced, err := rm.syncResource(application)
 		if err != nil {
-			return fmt.Errorf("failed to sync application: %v", application)
+			log.Warn("failed to sync application: ", application)
+			return err
 		}
 		if !synced {
 			log.Printf("No need to save application %v", application)
@@ -176,7 +175,8 @@ func (rm ResourceManager) syncPipelines() error {
 	for _, pipeline := range rm.resources.Pipelines {
 		synced, err := rm.syncResource(pipeline)
 		if err != nil {
-			return fmt.Errorf("failed to sync pipeline: %v", pipeline)
+			log.Warn("failed to sync pipeline: ", pipeline)
+			return err
 		}
 		if !synced {
 			log.Printf("No need to save pipeline %v", pipeline)
@@ -190,7 +190,8 @@ func (rm ResourceManager) syncPipelineTemplates() error {
 	for _, pipelineTemplate := range rm.resources.PipelineTemplates {
 		synced, err := rm.syncResource(pipelineTemplate)
 		if err != nil {
-			return fmt.Errorf("failed to sync pipeline template: %v", pipelineTemplate)
+			log.Warn("failed to sync pipeline template: ", pipelineTemplate)
+			return err
 		}
 		if !synced {
 			log.Printf("No need to save pipeline template %v", pipelineTemplate)

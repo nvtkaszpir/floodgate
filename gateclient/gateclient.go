@@ -50,6 +50,9 @@ func NewGateapiClient(floodgateConfig *config.Config) *GateapiClient {
 
 // WaitForSuccessfulTask function is waiting for task to finish
 func (c GateapiClient) WaitForSuccessfulTask(checkTask map[string]interface{}, maxRetries int) error {
+	if checkTask == nil {
+		return fmt.Errorf("task is empty, check if Spinnaker credentials are valid")
+	}
 	taskID := strings.Split(checkTask["ref"].(string), "/")[2]
 
 	task, resp, err := c.TaskControllerApi.GetTaskUsingGET1(c.Context, taskID)
